@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "mongodb": "^6.8.0"
+  },
+  "name": "expense.proj",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "devDependencies": {},
+  
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
