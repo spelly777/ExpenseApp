@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const Expense = require('./models/expense');
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
@@ -10,17 +11,36 @@ const PORT = process.env.PORT || 3000;
 const CONNECTION = process.env.CONNECTION;
 
 
-app.get('/', (req, res)=> {
-    res.send("Hello world.");
+const expense = new Expense({
+    name: "Chick fil-a",
+    expenseType: "food",
+    cost: 10,
+    date: "05/16/24"
+});
+expense.save();
+
+app.get('/newexpense', async (req, res)=> {
+    try{
+        const result = await Expense.find();
+        res.send({"expenses": result});
+    } catch(e) {
+        res.status(500).json({error: e.message});
+    }
 })
 
 app.post('/', (req, res)=> {
-    res.send('post request');
+    res.send('Welcome!');
 })
 
-app.post('/newexpense', (req, res) => {
+app.post('/newexpense', async (req, res) => {
     console.log(req.body);
-    res.send(req.body);
+    const expense = new Expense(req.body);
+    try {
+        await expense.save();
+        res.status(201).json({expense});
+    } catch(e) {
+        res.status(400).json({error: e.message});
+    }
 });
 
 const start = async() => {
